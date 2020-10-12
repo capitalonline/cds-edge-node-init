@@ -5,11 +5,11 @@ import (
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 )
+
 func YumConfig () error {
 	log.Infof("YumConfig: Starting")
 
-	// install some necessary pkgs
-	// pkgInstallCmd := fmt.Sprintf("yum install -y yum-utils device-mapper-persistent-data lvm2 vim wget lrzsz lsof ntpdate sysstat net-tools deltarpm redhat-lsb")
+	// install common tools
 	pkgInstallSlice := []string{"yum-utils", "device-mapper-persistent-data", "lvm2", "vim", "wget", "lrzsz", "lsof", "ntpdate", "sysstat", "net-tools", "deltarpm", "redhat-lsb"}
 	if out, err := utils.InstallPkgs(pkgInstallSlice, false); err != nil {
 		log.Warnf("YumConfig: some pkgs install failed, retry")

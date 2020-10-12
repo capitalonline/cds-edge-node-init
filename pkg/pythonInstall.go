@@ -11,7 +11,7 @@ func PythonInstall () error {
 	log.Infof("PythonInstall: Starting")
 
 	// install necessary pkgs
-	installPkgs := []string{"zlib-devel", "bzip2-devel", "openssl-devel", "openssl-static", "ncurses-devel", "sqlite-devel", "readline-devel", "gdbm-devel", "db4-devel", "libpcap-devel", "xz-devel", "libffi-devel", "lzma", "gcc", "tk-devel", "device-mapper-persistent-data"}
+	installPkgs := []string{"zlib-devel", "bzip2-devel", "openssl-devel", "openssl-static", "ncurses-devel", "sqlite-devel", "readline-devel", "gdbm-devel", "db4-devel", "libpcap-devel", "xz-devel", "libffi-devel", "lzma", "gcc", "tk-devel"}
 	if out, err := utils.InstallPkgs(installPkgs, false); err != nil {
 		log.Warnf("PythonInstall: some pkgs install failed, retry")
 		if out, err = utils.InstallPkgs(out, false); err != nil {
@@ -52,7 +52,7 @@ func PythonInstall () error {
 		return err
 	}
 
-	// confirm
+	// confirm installed version
 	confirmCmd := fmt.Sprintf("python --version && pip --version")
 	out, err := utils.RunCommand(confirmCmd)
 	if err != nil || !(strings.Contains(out, "Python") && strings.Contains(out, "pip")) {
@@ -60,7 +60,7 @@ func PythonInstall () error {
 		return err
 	}
 
-	// modify python version
+	// modify system's python version
 	modifyCmd := fmt.Sprintf("sed -i '1s/python/python2/g' /usr/bin/yum && sed -i '1s/python/python2/g' /usr/bin/yum-config-manager && sed -i '1s/python/python2/g' /usr/libexec/urlgrabber-ext-down")
 	if _, err := utils.RunCommand(modifyCmd); err != nil {
 		log.Errorf("PythonInstall: modify python version, err is: %s", err.Error())
