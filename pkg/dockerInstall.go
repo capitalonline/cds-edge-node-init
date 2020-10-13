@@ -20,16 +20,26 @@ func DockerInstall () error {
 	}
 
 	// config docker repo
-	repoCmd := fmt.Sprintf("cd /data/kubernetes/docker && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo && yum makecache fast")
+	repoCmd := fmt.Sprintf("cd /data/kubernetes/docker && yum-config-manager --add-repo http://%s/docker-ce.repo && yum makecache fast", utils.CdsOssAddress)
 	if _, err := utils.RunCommand(repoCmd); err != nil {
 		log.Errorf("DockerInstall: config docker repo failed, err is: %s", err.Error())
 		return err
 	}
 
 	// install docker
-	installCmd := fmt.Sprintf(" yum install -y docker-ce-19.03.11 docker-ce-cli-19.03.11 containerd.io")
-	if _, err := utils.RunCommand(installCmd); err != nil {
-		log.Errorf("DockerInstall: install docker failed, err is: %s", err.Error())
+	installDockerSlice := []string{"docker-ce-19.03.11", "docker-ce-cli-19.03.11", "containerd.io"}
+	if out, err := utils.InstallPkgs(installDockerSlice, false); err != nil {
+		log.Warnf("PythonInstall: some pkgs install failed, retry")
+		if _, err := utils.InstallPkgs(out, false); err != nil {
+			log.Errorf("DockerInstall: install docker failed, err is: %s", err.Error())
+			return err
+		}
+	}
+
+	// wget docker daemon.json
+	wgetCmd := fmt.Sprintf("wget -P /etc/docker http://%s/daemon.json", utils.CdsOssAddress)
+	if _, err := utils.RunCommand(wgetCmd); err != nil {
+		log.Errorf("DockerInstall: wget daemon.json failed, err is: %s", err.Error())
 		return err
 	}
 

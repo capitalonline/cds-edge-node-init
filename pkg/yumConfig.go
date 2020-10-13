@@ -20,7 +20,7 @@ func YumConfig () error {
 	}
 
 	// replace yum repo
-	yumCmd := fmt.Sprintf("cd /etc/yum.repos.d/ && mkdir bak && mv * bak && wget http://mirrors.aliyun.com/repo/Centos-7.repo && wget http://mirrors.aliyun.com/repo/epel-7.repo")
+	yumCmd := fmt.Sprintf("cd /etc/yum.repos.d/ && mkdir bak && mv * bak && wget http://%s/Centos-7.repo && wget http://%s/epel-7.repo", utils.CdsOssAddress, utils.CdsOssAddress)
 	if _, err := utils.RunCommand(yumCmd); err != nil {
 		log.Errorf("YumConfig: yumCmd error, err is: %s", err.Error())
 		return  err

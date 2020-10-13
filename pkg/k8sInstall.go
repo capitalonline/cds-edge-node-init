@@ -8,7 +8,7 @@ import (
 
 func K8sInstall () error {
 	// wget kubernetes.repo
-	wgetCmd := fmt.Sprintf("wget -P /etc/yum.repos.d https://***/kubernetes.repo")
+	wgetCmd := fmt.Sprintf("wget -P /etc/yum.repos.d http://%s/kubernetes.repo", utils.CdsOssAddress)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		return err
 	}

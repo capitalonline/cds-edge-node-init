@@ -30,7 +30,7 @@ func PythonInstall () error {
 	}
 
 	// install python 3.6
-	wgetPythonCmd := fmt.Sprintf("wget -P /usr/local https://www.python.org/ftp/python/3.6.3/Python-3.6.3.tar.xz")
+	wgetPythonCmd := fmt.Sprintf("wget -P /usr/local http://%s/Python-3.6.3.tar.xz", utils.CdsOssAddress)
 	if _, err := utils.RunCommand(wgetPythonCmd); err != nil {
 		log.Warnf("PythonInstall: wget python failed, retry")
 		if _, err := utils.RunCommand(wgetPythonCmd); err != nil {

@@ -15,12 +15,12 @@ func NetworkConfig () error {
 	}
 
 	// wget ipvs.modules
-	wgetCmd := fmt.Sprintf("wget -P /etc/sysconfig/modules https://***/ipvs.modules")
+	wgetCmd := fmt.Sprintf("wget -P /etc/sysconfig/modules http://%s/ipvs.modules", utils.CdsOssAddress)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		return err
 	}
 
-	// config nerwork
+	// config network
 	configCmd := fmt.Sprintf("chmod 755 /etc/sysconfig/modules/ipvs.modules && bash /etc/sysconfig/modules/ipvs.modules && lsmod | grep -E 'ip_vs|nf_conntrack_ipv4'")
 	if _, err := utils.RunCommand(configCmd); err != nil {
 		return err
