@@ -4,16 +4,20 @@ import (
 	"fmt"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
+	"strings"
 )
 
 func SystemConfig () error {
 	log.Infof("SystemConfig: Starting")
-	// firewall
-	firewallCmd := fmt.Sprintf("setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux && systemctl stop firewalld && systemctl disable firewalld")
-	// log.Infof("firewallCmd is: %s", firewallCmd)
+	
+	// selinux config
+	if err := selinuxConfig(); err != nil {
+		return err
+	}
 
-	_, err := utils.RunCommand(firewallCmd)
-	if err != nil {
+	// firewalld config
+	firewallCmd := fmt.Sprintf("systemctl stop firewalld && systemctl disable firewalld")
+	if _, err := utils.RunCommand(firewallCmd); err != nil {
 		log.Errorf("SystemConfig: firewallCmd error, err is: %s", err.Error())
 		return  err
 	}
@@ -31,5 +35,20 @@ func SystemConfig () error {
 	}
 
 	log.Infof("SystemConfig: Succeed!")
+	return nil
+}
+
+
+func selinuxConfig() error {
+	selinuxConfigCmd := fmt.Sprintf("setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
+	if out, err := utils.RunCommand("getenforce"); err == nil {
+		if strings.Contains(out, "Disabled") {
+			selinuxConfigCmd = fmt.Sprintf("sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
+			utils.RunCommand(selinuxConfigCmd)
+		}
+	} else {
+		return err
+	}
+
 	return nil
 }
