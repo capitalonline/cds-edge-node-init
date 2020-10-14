@@ -26,6 +26,10 @@ func main() {
 		log.Errorf("PythonInstall: failed, err is: %s", err.Error())
 	}
 
+	if err:= pkg.DockerInstall(); err != nil {
+		log.Errorf("PythonInstall: failed, err is: %s", err.Error())
+	}
+
 	log.Infof("Finished init main")
 
 }
