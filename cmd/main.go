@@ -22,6 +22,6 @@ func main() {
 		log.Errorf("YumConfig: failed, err is: %s\n", err.Error())
 	}
 
-	log.Errorf("Finished init main\n")
+	log.Infof("Finished init main\n")
 
 }
