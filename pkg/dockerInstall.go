@@ -11,6 +11,17 @@ import (
 func DockerInstall () error {
 	log.Infof("DockerInstall: starting")
 
+	// check
+	checkCmd := fmt.Sprintf("docker --version")
+	out, err := utils.RunCommand(checkCmd)
+	if err != nil {
+		return  err
+	}
+	if strings.Contains(out, "Docker") {
+		log.Infof("DockerInstall: installed, ignore install again!")
+		return nil
+	}
+
 	// create docker dir
 	if !utils.FileExisted("/data/kubernetes/docker") {
 		if err := utils.CreateDir("/data/kubernetes/docker", 755); err != nil {
@@ -45,14 +56,15 @@ func DockerInstall () error {
 
 	// confirm
 	confirmCmd := fmt.Sprintf("docker --version")
-	if _, err := utils.RunCommand(confirmCmd); err != nil {
-		log.Errorf("DockerInstall: install docker failed, err is: %s", err.Error())
+	out, err = utils.RunCommand(confirmCmd)
+	if  err != nil {
+		//log.Errorf("DockerInstall: install docker failed, err is: %s", err.Error())
 		return err
 	}
 
-	if !strings.Contains(confirmCmd, "Docker") {
-		log.Errorf("DockerInstall: install docker failed")
-		return fmt.Errorf("DockerInstall: install docker failed")
+	if !strings.Contains(out, "Docker") {
+		//log.Errorf("DockerInstall: install docker failed")
+		return fmt.Errorf(out)
 	}
 
 	log.Infof("DockerInstall: Succeed!")
