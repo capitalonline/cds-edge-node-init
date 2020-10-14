@@ -14,17 +14,17 @@ func init() {
 func main() {
 	log.Infof("Init main")
 
-	if err := pkg.SystemConfig(); err != nil {
-		log.Errorf("SystemConfig: failed, err is: %s", err.Error())
-	}
-
-	if err:= pkg.YumConfig(); err != nil {
-		log.Errorf("YumConfig: failed, err is: %s", err.Error())
-	}
-
-	if err:= pkg.PythonInstall(); err != nil {
-		log.Errorf("PythonInstall: failed, err is: %s", err.Error())
-	}
+	//if err := pkg.SystemConfig(); err != nil {
+	//	log.Errorf("SystemConfig: failed, err is: %s", err.Error())
+	//}
+	//
+	//if err:= pkg.YumConfig(); err != nil {
+	//	log.Errorf("YumConfig: failed, err is: %s", err.Error())
+	//}
+	//
+	//if err:= pkg.PythonInstall(); err != nil {
+	//	log.Errorf("PythonInstall: failed, err is: %s", err.Error())
+	//}
 
 	if err:= pkg.DockerInstall(); err != nil {
 		log.Errorf("PythonInstall: failed, err is: %s", err.Error())

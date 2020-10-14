@@ -10,6 +10,17 @@ import (
 func PythonInstall () error {
 	log.Infof("PythonInstall: Starting")
 
+	// check
+	checkCmd := fmt.Sprintf("python --version")
+	out, err := utils.RunCommand(checkCmd)
+	if err != nil {
+		return  err
+	}
+	if strings.Contains(out, "Python 3.6.3") {
+		log.Infof("PythonInstall: installed, ignore install again!")
+		return nil
+	}
+
 	// install necessary pkgs
 	installPkgs := []string{"zlib-devel", "bzip2-devel", "openssl-devel", "openssl-static", "ncurses-devel", "sqlite-devel", "readline-devel", "gdbm-devel", "db4-devel", "libpcap-devel", "xz-devel", "libffi-devel", "lzma", "gcc", "tk-devel"}
 	if out, err := utils.InstallPkgs(installPkgs, false); err != nil {
@@ -54,7 +65,7 @@ func PythonInstall () error {
 
 	// confirm installed version
 	confirmCmd := fmt.Sprintf("python --version && pip --version")
-	out, err := utils.RunCommand(confirmCmd)
+	out, err = utils.RunCommand(confirmCmd)
 	if err != nil || !(strings.Contains(out, "Python") && strings.Contains(out, "pip")) {
 		log.Errorf("PythonInstall: config python3 failed, err is: %s", err.Error())
 		return err
