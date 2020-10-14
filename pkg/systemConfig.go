@@ -9,29 +9,15 @@ import (
 
 func SystemConfig () error {
 	log.Infof("SystemConfig: Starting")
-	
+
 	// selinux config
 	if err := selinuxConfig(); err != nil {
 		return err
 	}
 
-	// firewalld config
-	firewallCmd := fmt.Sprintf("systemctl stop firewalld && systemctl disable firewalld")
-	if _, err := utils.RunCommand(firewallCmd); err != nil {
-		log.Errorf("SystemConfig: firewallCmd error, err is: %s", err.Error())
-		return  err
-	}
-
-	// rewrite /etc/sysctl.conf
-	wgetCmd := fmt.Sprintf("wget -P /tmp http://%s/sysctl.conf", utils.CdsOssAddress)
-	if _, err := utils.RunCommand(wgetCmd); err != nil {
+	// firewalld and /etc/sysctl.conf config
+	if err := firewalldConfig(); err != nil {
 		return err
-	}
-
-	// back /etc/sysctl.conf and rewrite it
-	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && cp /tmp/sysctl.conf /etc/sysctl.conf")
-	if _, err := utils.RunCommand(modifyCmd); err != nil {
-		return  err
 	}
 
 	log.Infof("SystemConfig: Succeed!")
@@ -48,6 +34,25 @@ func selinuxConfig() error {
 		}
 	} else {
 		return err
+	}
+
+	return nil
+}
+
+func firewalldConfig () error {
+	firewallCmd := fmt.Sprintf("systemctl stop firewalld && systemctl disable firewalld")
+	if _, err := utils.RunCommand(firewallCmd); err != nil {
+		return  err
+	}
+
+	wgetCmd := fmt.Sprintf("wget -P /tmp http://%s/sysctl.conf", utils.CdsOssAddress)
+	if _, err := utils.RunCommand(wgetCmd); err != nil {
+		return err
+	}
+
+	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && cp /tmp/sysctl.conf /etc/sysctl.conf")
+	if _, err := utils.RunCommand(modifyCmd); err != nil {
+		return  err
 	}
 
 	return nil
