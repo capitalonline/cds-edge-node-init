@@ -20,7 +20,13 @@ func YumConfig () error {
 	}
 
 	// replace yum repo
-	yumCmd := fmt.Sprintf("mkdir /root/repo-bak && cd /etc/yum.repos.d && mv * /root/repo-bak && wget http://%s/Centos-7.repo && wget http://%s/epel-7.repo", utils.CdsOssAddress, utils.CdsOssAddress)
+	repoBackDir := fmt.Sprintf("/root/repo-bak")
+	if !utils.FileExisted(repoBackDir) {
+		if err := utils.CreateDir(repoBackDir, 755); err != nil {
+			return  err
+		}
+	}
+	yumCmd := fmt.Sprintf("cd /etc/yum.repos.d && mv * %s && wget http://%s/Centos-7.repo && wget http://%s/epel-7.repo", repoBackDir, utils.CdsOssAddress, utils.CdsOssAddress)
 	if _, err := utils.RunCommand(yumCmd); err != nil {
 		log.Errorf("YumConfig: yumCmd error, err is: %s", err.Error())
 		return  err
