@@ -2,7 +2,6 @@ package utils
 
 import (
 	"fmt"
-	"github.com/capitalonline/cds-csi-driver/pkg/driver/utils"
 )
 
 func InstallPkgs(pkgs []string, group bool) ([]string, error) {
@@ -15,7 +14,7 @@ func InstallPkgs(pkgs []string, group bool) ([]string, error) {
 	var failedSlice []string
 	for _, value := range pkgs {
 		installCmd := fmt.Sprintf("%s %s", yumCmd, value)
-		if _, err := utils.RunCommand(installCmd); err != nil {
+		if _, err := RunCommand(installCmd); err != nil {
 			// Logger.Printf("install: %s error, err is: %s", value, err.Error())
 			failedSlice = append(failedSlice, value)
 		}
