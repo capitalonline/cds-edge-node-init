@@ -12,7 +12,7 @@ func init() {
 	flag.Parse()
 }
 
-func main () {
+func main() {
 	log.Infof("Init main")
 
 	//err := pkg.SystemConfig()
