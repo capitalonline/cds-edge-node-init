@@ -7,8 +7,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-
-
 func init() {
 	flag.Set("logtostderr", "true")
 	flag.Parse()
@@ -24,8 +22,8 @@ func main () {
 	//	fmt.Errorf("DockerInstall: failed, err is: %s\n", err.Error())
 	//}
 
-	if err := pkg.DockerInstall(); err != nil {
-		fmt.Errorf("DockerInstall: failed, err is: %s\n", err.Error())
+	if err := pkg.SystemConfig(); err != nil {
+		fmt.Errorf("SystemConfig: failed, err is: %s\n", err.Error())
 	}
 
 	fmt.Printf("Finished init main\n")
