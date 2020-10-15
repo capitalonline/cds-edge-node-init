@@ -34,8 +34,12 @@ func main() {
 	//	log.Errorf("ImagePullAndTag: failed, err is: %s", err.Error())
 	//}
 
-	if err:= pkg.K8sInstall("1.17.0"); err != nil {
-		log.Errorf("K8sInstall: failed, err is: %s", err)
+	//if err:= pkg.K8sInstall("1.17.0"); err != nil {
+	//	log.Errorf("K8sInstall: failed, err is: %s", err)
+	//}
+
+	if err:= pkg.NetworkConfig(); err != nil {
+		log.Errorf("NetworkConfig: failed, err is: %s", err)
 	}
 
 	log.Infof("Finished init main")

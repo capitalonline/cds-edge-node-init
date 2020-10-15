@@ -3,9 +3,12 @@ package pkg
 import (
 	"fmt"
 	"github.com/capitalonline/cds-edge-node-init/utils"
+	log "github.com/sirupsen/logrus"
 )
 
 func NetworkConfig () error {
+	log.Infof("NetworkConfig: starting")
+
 	// install necessary pkgs
 	installPkgs := []string{"ipvsadm", "ipset"}
 	if out, err := utils.InstallPkgs(installPkgs, false ); err != nil {
@@ -26,5 +29,6 @@ func NetworkConfig () error {
 		return err
 	}
 
+	log.Infof("NetworkConfig: Succeed!")
 	return nil
 }
