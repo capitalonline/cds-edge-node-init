@@ -38,7 +38,7 @@ func ImagePullAndTag (node string) error {
 	if out, err := utils.ImagePullAndTag(imagePull); err != nil {
 		log.Warnf("ImagePullAndTag: docker images pull and tag failed, retry")
 		if out, err = utils.ImagePullAndTag(out); err != nil {
-			log.Errorf("ImagePullAndTag: docker images: %s pull and tag failed again, err is: %s", out, err.Error())
+			log.Errorf("ImagePullAndTag: docker images: %s pull and tag failed again, err is: %s", out, err)
 			return err
 		}
 	}
