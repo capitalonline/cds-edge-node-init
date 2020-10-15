@@ -30,8 +30,12 @@ func main() {
 	//	log.Errorf("PythonInstall: failed, err is: %s", err.Error())
 	//}
 
-	if err:= pkg.ImagePullAndTag("worker"); err != nil {
-		log.Errorf("ImagePullAndTag: failed, err is: %s", err.Error())
+	//if err:= pkg.ImagePullAndTag("worker"); err != nil {
+	//	log.Errorf("ImagePullAndTag: failed, err is: %s", err.Error())
+	//}
+
+	if err:= pkg.K8sInstall(); err != nil {
+		log.Errorf("K8sInstall: failed, err is: %s", err)
 	}
 
 	log.Infof("Finished init main")
