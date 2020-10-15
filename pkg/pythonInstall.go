@@ -12,10 +12,7 @@ func PythonInstall () error {
 
 	// check
 	checkCmd := fmt.Sprintf("python --version")
-	out, err := utils.RunCommand(checkCmd)
-	if err != nil {
-		return  err
-	}
+	out, _ := utils.RunCommand(checkCmd)
 	if strings.Contains(out, "Python 3.6.3") {
 		log.Infof("PythonInstall: installed, ignore install again!")
 		return nil
@@ -65,7 +62,7 @@ func PythonInstall () error {
 
 	// confirm installed version
 	confirmCmd := fmt.Sprintf("python --version && pip --version")
-	out, err = utils.RunCommand(confirmCmd)
+	out, err := utils.RunCommand(confirmCmd)
 	if err != nil || !(strings.Contains(out, "Python") && strings.Contains(out, "pip")) {
 		log.Errorf("PythonInstall: config python3 failed, err is: %s", err.Error())
 		return err
