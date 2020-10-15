@@ -14,7 +14,7 @@ func PythonInstall () error {
 	checkCmd := fmt.Sprintf("python --version")
 	out, _ := utils.RunCommand(checkCmd)
 	if strings.Contains(out, "Python 3.6.3") {
-		log.Infof("PythonInstall: installed, ignore install again!")
+		log.Warnf("PythonInstall: installed, ignore install again!")
 		return nil
 	}
 

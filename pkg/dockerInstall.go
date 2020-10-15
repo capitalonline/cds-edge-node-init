@@ -8,13 +8,13 @@ import (
 )
 
 // version 19.03.11
-func DockerInstall () error {
+func DockerInstall (version string) error {
 	log.Infof("DockerInstall: starting")
 
 	// check
 	checkCmd := fmt.Sprintf("docker --version")
-	if out, _ := utils.RunCommand(checkCmd); strings.Contains(out, "Docker") {
-		log.Infof("DockerInstall: installed, ignore install again!")
+	if out, _ := utils.RunCommand(checkCmd); strings.Contains(out, version) {
+		log.Warnf("DockerInstall: installed, ignore install again!")
 		return nil
 	}
 
@@ -34,7 +34,7 @@ func DockerInstall () error {
 	}
 
 	// install docker
-	installDockerSlice := []string{"docker-ce-19.03.11", "docker-ce-cli-19.03.11", "containerd.io"}
+	installDockerSlice := []string{"docker-ce-"+version, "docker-ce-cli-"+version, "containerd.io"}
 	if out, err := utils.InstallPkgs(installDockerSlice, false); err != nil {
 		log.Warnf("PythonInstall: some pkgs install failed, retry")
 		if _, err := utils.InstallPkgs(out, false); err != nil {
@@ -58,7 +58,7 @@ func DockerInstall () error {
 		return err
 	}
 
-	if !strings.Contains(out, "Docker") {
+	if !strings.Contains(out, version) {
 		//log.Errorf("DockerInstall: install docker failed")
 		return fmt.Errorf(out)
 	}

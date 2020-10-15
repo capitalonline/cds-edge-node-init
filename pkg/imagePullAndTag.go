@@ -43,5 +43,6 @@ func ImagePullAndTag (node string) error {
 		}
 	}
 
+	log.Infof("ImagePullAndTag: Succeed!")
 	return nil
 }
