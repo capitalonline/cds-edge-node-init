@@ -45,12 +45,12 @@ func firewalldConfig () error {
 		return  err
 	}
 
-	wgetCmd := fmt.Sprintf("wget -P /tmp http://%s/sysctl.conf", utils.CdsOssAddress)
-	if _, err := utils.RunCommand(wgetCmd); err != nil {
-		return err
-	}
+	//wgetCmd := fmt.Sprintf("wget -P /tmp http://%s/sysctl.conf", utils.CdsOssAddress)
+	//if _, err := utils.RunCommand(wgetCmd); err != nil {
+	//	return err
+	//}
 
-	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && cp /tmp/sysctl.conf /etc/sysctl.conf")
+	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && wget -P /etc http://%s/sysctl.conf", utils.CdsOssAddress)
 	if _, err := utils.RunCommand(modifyCmd); err != nil {
 		return  err
 	}
