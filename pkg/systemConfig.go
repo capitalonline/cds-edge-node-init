@@ -2,13 +2,12 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
-func SystemConfig (k8sV17InitData *run.K8sV17Config) error {
+func SystemConfig (k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("SystemConfig: Starting")
 
 	// selinux config

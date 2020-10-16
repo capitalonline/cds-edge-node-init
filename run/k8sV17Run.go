@@ -24,7 +24,7 @@ func K8sV17Run (k8s17InitJsonUrl string) {
 	}
 
 	// read /tmp/k8sV1.17.0Install.json and unmarshal
-	var k8sV17InitData K8sV17Config
+	var k8sV17InitData utils.K8sV17Config
 	if res, err := ioutil.ReadFile("/tmp/k8sV1.17.0Install.json"); err != nil {
 		log.Fatalf(err.Error())
 	} else {
@@ -35,7 +35,7 @@ func K8sV17Run (k8s17InitJsonUrl string) {
 
 	// init
 	switch k8sV17InitData.K8sInstall.Version {
-	case K8sV17:
+	case utils.K8sV17:
 		if err := pkg.SystemConfig(&k8sV17InitData); err != nil {
 			log.Fatalf("SystemConfig: failed, err is: %s", err.Error())
 		}

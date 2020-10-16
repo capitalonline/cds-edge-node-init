@@ -3,8 +3,57 @@ package utils
 import "log"
 
 var (
+	K8sV17   = "1.17.0"
 	FlagDebugMode  *bool
 	Logger         *log.Logger
 	MaxWaitingTime = 200 //seconds
 	CdsOssAddress  = "cds-edge-node-init.209faf3a84524f9f81d71f2c0be97de3.oss-cnbj01.cdsgss.com"
 )
+type K8sV17Config struct {
+	K8sInstall    k8s
+	SystemConfig  config
+	YumConfig     yum
+	PythonInstall python
+	DockerInstall docker
+	DockerImages  images
+	NetworkConfig network
+}
+
+type k8s struct {
+	Version string   `json:"version"`
+	RepoAdd string   `json:"repoAdd"`
+	Install []string `json:"install"`
+}
+
+type config struct {
+	Version string `json:"version"`
+	Sysctl  string `json:"sysctl"`
+}
+
+type yum struct {
+	Pkgs        []string `json:"pkgs"`
+	RepoReplace []string `json:"repoReplace"`
+}
+
+type python struct {
+	Version string   `json:"version"`
+	Pkgs    []string `json:"pkgs"`
+	Group   []string `json:"group"`
+	Install string   `json:"install"`
+}
+
+type docker struct {
+	Version    string `json:"version"`
+	RepoAdd    string `json:"repoAdd"`
+	DaemonFile string `json:"daemonFile"`
+}
+
+type images struct {
+	ImageTar string `json:"imageTar"`
+}
+
+type network struct {
+	Ipvs string   `json:"ipvs"`
+	Pkgs []string `json:"pkgs"`
+}
+

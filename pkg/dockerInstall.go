@@ -2,14 +2,13 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
 // version 19.03.11
-func DockerInstall (k8sV17InitData *run.K8sV17Config) error {
+func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("DockerInstall: starting")
 
 	// check
