@@ -2,11 +2,12 @@ package pkg
 
 import (
 	"fmt"
+	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 )
 
-func ImagePullAndLoad () error {
+func ImagePullAndLoad (k8sV17InitData *run.K8sV17Config) error {
 	log.Infof("ImagePullAndLoad: Starting")
 
 	//imageMasterSlice := []string{
@@ -43,7 +44,7 @@ func ImagePullAndLoad () error {
 	//	}
 	//}
 
-	wgetCmd := fmt.Sprintf("wget -P /tmp http://cds-edge-node-init.209faf3a84524f9f81d71f2c0be97de3.oss-cnbj01.cdsgss.com/images/k8sV1.17.0-DockerImages.tar.gz")
+	wgetCmd := fmt.Sprintf("wget -P /tmp %s", k8sV17InitData.DockerImages.ImageTar)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		return err
 	}

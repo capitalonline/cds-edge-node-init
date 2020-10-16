@@ -2,8 +2,17 @@ package main
 
 import (
 	"flag"
-	"github.com/capitalonline/cds-edge-node-init/pkg"
+	"github.com/capitalonline/cds-edge-node-init/run"
 	log "github.com/sirupsen/logrus"
+)
+
+const (
+	k8sV17Version           = "1.17.0"
+	k8s17InitDefaultJsonUrl = "http://cds-edge-node-init.209faf3a84524f9f81d71f2c0be97de3.oss-cnbj01.cdsgss.com/k8sVersion/k8sV1.17.0Install.json"
+)
+
+var (
+	k8sVersion = flag.String("version", "1.17.0", "k8s init version")
 )
 
 func init() {
@@ -12,40 +21,13 @@ func init() {
 }
 
 func main() {
-	log.Infof("Init main")
+	version := *k8sVersion
 
-	if err := pkg.SystemConfig(); err != nil {
-		log.Errorf("SystemConfig: failed, err is: %s", err.Error())
+	switch version {
+	case k8sV17Version:
+		run.K8sV17Run(k8s17InitDefaultJsonUrl)
+	default:
+		log.Fatalf("unsupported k8sVersion: %s", version)
 	}
-
-	if err:= pkg.YumConfig(); err != nil {
-		log.Errorf("YumConfig: failed, err is: %s", err.Error())
-	}
-
-	if err:= pkg.PythonInstall(); err != nil {
-		log.Errorf("PythonInstall: failed, err is: %s", err.Error())
-	}
-
-	if err:= pkg.DockerInstall("19.03.11"); err != nil {
-		log.Errorf("PythonInstall: failed, err is: %s", err.Error())
-	}
-
-	if err:= pkg.ImagePullAndLoad(); err != nil {
-		log.Errorf("ImagePullAndTag: failed, err is: %s", err.Error())
-	}
-
-	if err:= pkg.K8sInstall("1.17.0"); err != nil {
-		log.Errorf("K8sInstall: failed, err is: %s", err)
-	}
-
-	if err:= pkg.ImagePullAndLoad(); err != nil {
-		log.Errorf("ImagePullAndTag: failed, err is: %s", err)
-	}
-
-	if err:= pkg.NetworkConfig(); err != nil {
-		log.Errorf("NetworkConfig: failed, err is: %s", err)
-	}
-
-	log.Infof("Finished init main")
 
 }

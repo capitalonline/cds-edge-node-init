@@ -2,32 +2,39 @@ package pkg
 
 import (
 	"fmt"
+	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
-func K8sInstall (version string) error {
+func K8sInstall (k8sV17InitData *run.K8sV17Config) error {
 	log.Infof("K8sInstall: starting")
 
 	// check
 	checkCmd := fmt.Sprintf("kubelet --version")
-	if out, _:= utils.RunCommand(checkCmd); strings.Contains(out, version) {
-		log.Warnf("kubelet %s installed", version)
+	if out, _:= utils.RunCommand(checkCmd); strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
+		log.Warnf("kubelet %s installed", k8sV17InitData.K8sInstall.Version)
 		return nil
 	}
 
 	// wget kubernetes.repo
-	wgetCmd := fmt.Sprintf("wget -P /etc/yum.repos.d http://%s/kubernetes.repo", utils.CdsOssAddress)
+	wgetCmd := fmt.Sprintf("wget -P /etc/yum.repos.d %s", k8sV17InitData.K8sInstall.RepoAdd)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		return err
 	}
 
 	// install kubeadm and kubelet and kubectl v1.17.0
-	installCmd := fmt.Sprintf("yum install -y kubeadm-%s-0 kubelet-%s-0 kubectl-%s-0 --disableexcludes=kubernetes", version, version, version)
-	if _, err := utils.RunCommand(installCmd); err != nil {
-		return err
+	for _, value := range k8sV17InitData.K8sInstall.Install {
+		installCmd := fmt.Sprintf("yum install -y %s", value)
+		if _, err := utils.RunCommand(installCmd); err != nil {
+			return err
+		}
 	}
+	//installCmd := fmt.Sprintf("yum install -y kubeadm-%s-0 kubelet-%s-0 kubectl-%s-0 --disableexcludes=kubernetes", k8sV17InitData.K8sInstall.Version, k8sV17InitData.K8sInstall.Version, k8sV17InitData.K8sInstall.Version)
+	//if _, err := utils.RunCommand(installCmd); err != nil {
+	//	return err
+	//}
 
 	// confirm
 	confirmCmd := fmt.Sprintf("kubelet --version")
@@ -35,8 +42,8 @@ func K8sInstall (version string) error {
 	if err != nil {
 		return err
 	}
-	if !strings.Contains(out, version) {
-		return fmt.Errorf("confirm kubelet install version %s failed", version)
+	if !strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
+		return fmt.Errorf("confirm kubelet install version %s failed", k8sV17InitData.K8sInstall.Version)
 	}
 
 	log.Infof("K8sInstall: Succeed!")

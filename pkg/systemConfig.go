@@ -2,12 +2,13 @@ package pkg
 
 import (
 	"fmt"
+	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
-func SystemConfig () error {
+func SystemConfig (k8sV17InitData *run.K8sV17Config) error {
 	log.Infof("SystemConfig: Starting")
 
 	// selinux config
@@ -16,7 +17,7 @@ func SystemConfig () error {
 	}
 
 	// firewalld and /etc/sysctl.conf config
-	if err := firewalldConfig(); err != nil {
+	if err := firewalldAndSysctlConfig(k8sV17InitData.SystemConfig.Sysctl); err != nil {
 		return err
 	}
 
@@ -39,18 +40,13 @@ func selinuxConfig() error {
 	return nil
 }
 
-func firewalldConfig () error {
+func firewalldAndSysctlConfig (sysctlUrl string) error {
 	firewallCmd := fmt.Sprintf("systemctl stop firewalld && systemctl disable firewalld")
 	if _, err := utils.RunCommand(firewallCmd); err != nil {
 		return  err
 	}
 
-	//wgetCmd := fmt.Sprintf("wget -P /tmp http://%s/sysctl.conf", utils.CdsOssAddress)
-	//if _, err := utils.RunCommand(wgetCmd); err != nil {
-	//	return err
-	//}
-
-	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && wget -P /etc http://%s/sysctl.conf", utils.CdsOssAddress)
+	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && wget -P /etc %s", sysctlUrl)
 	if _, err := utils.RunCommand(modifyCmd); err != nil {
 		return  err
 	}

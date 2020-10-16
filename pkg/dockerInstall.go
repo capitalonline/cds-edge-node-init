@@ -2,18 +2,19 @@ package pkg
 
 import (
 	"fmt"
+	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 	"strings"
 )
 
 // version 19.03.11
-func DockerInstall (version string) error {
+func DockerInstall (k8sV17InitData *run.K8sV17Config) error {
 	log.Infof("DockerInstall: starting")
 
 	// check
 	checkCmd := fmt.Sprintf("docker --version")
-	if out, _ := utils.RunCommand(checkCmd); strings.Contains(out, version) {
+	if out, _ := utils.RunCommand(checkCmd); strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
 		log.Warnf("DockerInstall: installed, ignore install again!")
 		return nil
 	}
@@ -27,14 +28,14 @@ func DockerInstall (version string) error {
 	}
 
 	// config docker repo
-	repoCmd := fmt.Sprintf("cd /data/kubernetes/docker && yum-config-manager --add-repo http://%s/docker-ce.repo && yum makecache fast", utils.CdsOssAddress)
+	repoCmd := fmt.Sprintf("cd /data/kubernetes/docker && yum-config-manager --add-repo %s && yum makecache fast", k8sV17InitData.DockerInstall.RepoAdd)
 	if _, err := utils.RunCommand(repoCmd); err != nil {
 		log.Errorf("DockerInstall: config docker repo failed, err is: %s", err)
 		return err
 	}
 
 	// install docker
-	installDockerSlice := []string{"docker-ce-"+version, "docker-ce-cli-"+version, "containerd.io"}
+	installDockerSlice := []string{"docker-ce-"+k8sV17InitData.DockerInstall.Version, "docker-ce-cli-"+k8sV17InitData.DockerInstall.Version, "containerd.io"}
 	if out, err := utils.InstallPkgs(installDockerSlice, false); err != nil {
 		log.Warnf("PythonInstall: some pkgs install failed, retry")
 		if _, err := utils.InstallPkgs(out, false); err != nil {
@@ -44,7 +45,7 @@ func DockerInstall (version string) error {
 	}
 
 	// wget docker daemon.json
-	wgetCmd := fmt.Sprintf("wget -P /etc/docker http://%s/daemon.json", utils.CdsOssAddress)
+	wgetCmd := fmt.Sprintf("wget -P /etc/docker %s", k8sV17InitData.DockerInstall.DaemonFile)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		log.Errorf("DockerInstall: wget daemon.json failed, err is: %s", err)
 		return err
@@ -58,7 +59,7 @@ func DockerInstall (version string) error {
 		return err
 	}
 
-	if !strings.Contains(out, version) {
+	if !strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
 		//log.Errorf("DockerInstall: install docker failed")
 		return fmt.Errorf(out)
 	}
