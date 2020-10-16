@@ -1,7 +1,6 @@
 package run
 
 var (
-	Centos76 = "CentOS 7.6"
 	K8sV17   = "1.17.0"
 )
 
