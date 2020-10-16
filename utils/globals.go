@@ -3,12 +3,12 @@ package utils
 import "log"
 
 var (
-	K8sV17   = "1.17.0"
+	K8sV17         = "1.17.0"
 	FlagDebugMode  *bool
 	Logger         *log.Logger
 	MaxWaitingTime = 200 //seconds
-	CdsOssAddress  = "cds-edge-node-init.209faf3a84524f9f81d71f2c0be97de3.oss-cnbj01.cdsgss.com"
 )
+
 type K8sV17Config struct {
 	K8sInstall    k8s
 	SystemConfig  config
@@ -38,7 +38,7 @@ type yum struct {
 type python struct {
 	Version string   `json:"version"`
 	Pkgs    []string `json:"pkgs"`
-	Group   []string `json:"group"`
+	Group   string   `json:"group"`
 	Install string   `json:"install"`
 }
 
@@ -56,4 +56,3 @@ type network struct {
 	Ipvs string   `json:"ipvs"`
 	Pkgs []string `json:"pkgs"`
 }
-

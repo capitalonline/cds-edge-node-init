@@ -14,6 +14,11 @@ func K8sV17Run (k8s17InitJsonUrl string) {
 	log.Infof("K8sV17Run: init starting")
 
 	// wget k8s17InitJsonUrl
+	wgetInstall := []string{"wget"}
+	if _, err := utils.InstallPkgs(wgetInstall, false); err != nil {
+		log.Fatalf("K8sV17Run: install wget failed, err is: %s", err)
+	}
+
 	wgetCmd := fmt.Sprintf("wget -P /tmp %s", k8s17InitJsonUrl)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		log.Warnf("K8sV17Run: wget k8s17InitJson failed, retry 2s")
@@ -64,7 +69,7 @@ func K8sV17Run (k8s17InitJsonUrl string) {
 			log.Fatalf("NetworkConfig: failed, err is: %s", err)
 		}
 	default:
-		log.Fatalf("K8sV17Run: unsupported k8s intall version: %s", k8sV17InitData.K8sInstall.Version)
+		log.Fatalf("K8sV17Run: unsupported k8s install version: %s", k8sV17InitData.K8sInstall.Version)
 	}
 
 	log.Infof("K8sV17Run: Successfully!")
