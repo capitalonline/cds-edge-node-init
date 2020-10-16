@@ -1,12 +1,15 @@
-# github.com/capitalonline/cds-csi-driver v1.4.0
+# github.com/kr/pretty v0.1.0
 ## explicit
-github.com/capitalonline/cds-csi-driver/pkg/driver/utils
-# github.com/getsentry/sentry-go v0.7.0
-## explicit
-github.com/getsentry/sentry-go
 # github.com/sirupsen/logrus v1.7.0
 ## explicit
 github.com/sirupsen/logrus
+# github.com/stretchr/testify v1.4.0
+## explicit
 # golang.org/x/sys v0.0.0-20191220220014-0732a990476f
+## explicit
 golang.org/x/sys/unix
 golang.org/x/sys/windows
+# gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127
+## explicit
+# gopkg.in/yaml.v2 v2.2.4
+## explicit
