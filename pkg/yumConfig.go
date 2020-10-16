@@ -2,12 +2,11 @@ package pkg
 
 import (
 	"fmt"
-	"github.com/capitalonline/cds-edge-node-init/run"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 )
 
-func YumConfig (k8sV17InitData *run.K8sV17Config) error {
+func YumConfig (k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("YumConfig: Starting")
 
 	// install common tools
