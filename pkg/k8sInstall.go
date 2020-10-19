@@ -34,11 +34,8 @@ func K8sInstall (k8sV17InitData *utils.K8sV17Config) error {
 	// confirm
 	confirmCmd := fmt.Sprintf("kubelet --version")
 	out, err := utils.RunCommand(confirmCmd)
-	if err != nil {
-		return err
-	}
 	if !strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
-		return fmt.Errorf("confirm kubelet installed version %s failed", k8sV17InitData.K8sInstall.Version)
+		return fmt.Errorf("confirm kubelet installed version %s failed, err(out) is: %s", k8sV17InitData.K8sInstall.Version, err.Error())
 	}
 
 	//if strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
