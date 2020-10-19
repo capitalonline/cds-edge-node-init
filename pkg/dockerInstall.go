@@ -59,14 +59,10 @@ func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 
 	// confirm
 	confirmCmd := fmt.Sprintf("docker --version")
-	out, err := utils.RunCommand(confirmCmd)
-	if  err != nil {
+	if  out, err := utils.RunCommand(confirmCmd); err != nil {
 		log.Errorf("DockerInstall: install docker failed, err is: %s", err)
 		return err
-	}
-
-	if !strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
-		//log.Errorf("DockerInstall: install docker failed")
+	} else if !strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
 		return fmt.Errorf(out)
 	}
 
