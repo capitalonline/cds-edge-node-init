@@ -13,9 +13,15 @@ func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 
 	// check
 	checkCmd := fmt.Sprintf("docker --version")
-	if out, err := utils.RunCommand(checkCmd); err == nil {
-		strings.Contains(out, k8sV17InitData.DockerInstall.Version)
-		log.Warnf("DockerInstall: installed, ignore install again!")
+	if out, err := utils.RunCommand(checkCmd); err == nil && strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
+		log.Warnf("DockerInstall: docker %s installed, ignore install again!", k8sV17InitData.DockerInstall.Version)
+		// make sure docker running
+		startCmd := fmt.Sprintf("systemctl start docker")
+		if _, err := utils.RunCommand(startCmd); err != nil {
+			log.Errorf("DockerInstall: start docker failed, err is: %s", err)
+			return err
+		}
+
 		return nil
 	}
 

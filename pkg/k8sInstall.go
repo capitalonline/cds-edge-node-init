@@ -12,7 +12,7 @@ func K8sInstall (k8sV17InitData *utils.K8sV17Config) error {
 
 	// check
 	checkCmd := fmt.Sprintf("kubelet --version")
-	if out, _:= utils.RunCommand(checkCmd); strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
+	if out, err:= utils.RunCommand(checkCmd); err == nil && strings.Contains(out, k8sV17InitData.K8sInstall.Version){
 		log.Warnf("kubelet %s installed", k8sV17InitData.K8sInstall.Version)
 		return nil
 	}

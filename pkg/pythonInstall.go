@@ -19,7 +19,6 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	// install necessary pkgs
-	// installPkgs := []string{"zlib-devel", "bzip2-devel", "openssl-devel", "openssl-static", "ncurses-devel", "sqlite-devel", "readline-devel", "gdbm-devel", "db4-devel", "libpcap-devel", "xz-devel", "libffi-devel", "lzma", "gcc", "tk-devel"}
 	if out, err := utils.InstallPkgs(k8sV17InitData.PythonInstall.Pkgs, false); err != nil {
 		log.Warnf("PythonInstall: some pkgs install failed, retry")
 		if out, err = utils.InstallPkgs(out, false); err != nil {
@@ -28,21 +27,12 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 		}
 	}
 
-	// groupInstallPkgs := []string{"Development tools"}
 	if out, err := utils.InstallPkgs(k8sV17InitData.PythonInstall.Group, true); err != nil {
 		if out, err = utils.InstallPkgs(out, true); err != nil {
 			log.Errorf("PythonInstall: pkgs: %s install failed again, err is: %s", out, err.Error())
 			return err
 		}
 	}
-
-	//if out, err := utils.InstallPkgs([]string{k8sV17InitData.PythonInstall.Group}, true); err != nil {
-	//	log.Warnf("PythonInstall: group pkgs install failed, retry")
-	//	if out, err = utils.InstallPkgs(out, false); err != nil {
-	//		log.Errorf("PythonInstall: pkgs: %s install failed again, err is: %s", out, err.Error())
-	//		return err
-	//	}
-	//}
 
 	// install python 3.6
 	wgetPythonCmd := fmt.Sprintf("wget -P /usr/local %s", k8sV17InitData.PythonInstall.Install)
@@ -67,7 +57,7 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 		return err
 	}
 
-	// confirm installed version
+	// confirm
 	confirmCmd := fmt.Sprintf("python --version && pip --version")
 	out, err := utils.RunCommand(confirmCmd)
 	if err != nil || !(strings.Contains(out, "Python") && strings.Contains(out, "pip")) {
@@ -75,7 +65,7 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 		return err
 	}
 
-	// modify system's python version
+	// modify system's python version from python to python2
 	modifyCmd := fmt.Sprintf("sed -i '1s/python/python2/g' /usr/bin/yum && sed -i '1s/python/python2/g' /usr/bin/yum-config-manager && sed -i '1s/python/python2/g' /usr/libexec/urlgrabber-ext-down")
 	if _, err := utils.RunCommand(modifyCmd); err != nil {
 		log.Errorf("PythonInstall: modify python version, err is: %s", err.Error())
