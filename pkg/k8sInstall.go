@@ -8,12 +8,18 @@ import (
 )
 
 func K8sInstall (k8sV17InitData *utils.K8sV17Config) error {
-	log.Infof("K8sInstall: starting")
+	log.Infof("K8sInstall: %s starting", k8sV17InitData.K8sInstall.Version)
 
 	// check
 	out, _:= utils.RunCommand("kubelet --version")
 	if strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
 		log.Warnf("K8sInstall: kubelet %s installed, ignore install again!", k8sV17InitData.K8sInstall.Version)
+		// make sure kubelet start
+		startCmd := fmt.Sprintf("systemctl enable kubelet && systemctl start kubelet")
+		if _, err := utils.RunCommand(startCmd); err != nil {
+			return err
+		}
+
 		return nil
 	}
 
@@ -38,6 +44,12 @@ func K8sInstall (k8sV17InitData *utils.K8sV17Config) error {
 	out, err := utils.RunCommand(confirmCmd)
 	if !strings.Contains(out, k8sV17InitData.K8sInstall.Version) {
 		return fmt.Errorf("confirm kubelet installed version %s failed, err(out) is: %s", k8sV17InitData.K8sInstall.Version, err.Error())
+	}
+
+	// start
+	startCmd := fmt.Sprintf("systemctl enable kubelet && systemctl start kubelet")
+	if _, err := utils.RunCommand(startCmd); err != nil {
+		return err
 	}
 
 	log.Infof("K8sInstall: Succeed!")

@@ -8,7 +8,7 @@ import (
 )
 
 func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
-	log.Infof("PythonInstall: Starting")
+	log.Infof("PythonInstall: %s Starting", k8sV17InitData.PythonInstall.Version)
 
 	// check
 	checkCmd := fmt.Sprintf("python --version")
@@ -20,7 +20,7 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 
 	// install necessary pkgs
 	if out, err := utils.InstallPkgs(k8sV17InitData.PythonInstall.Pkgs, false); err != nil {
-		log.Warnf("PythonInstall: some pkgs install failed, retry")
+		log.Warnf("PythonInstall: pkgs: %s install failed, retry", out)
 		if out, err = utils.InstallPkgs(out, false); err != nil {
 			log.Errorf("PythonInstall: pkgs: %s install failed again, err is: %s", out, err.Error())
 			return err
@@ -28,6 +28,7 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	if out, err := utils.InstallPkgs(k8sV17InitData.PythonInstall.Group, true); err != nil {
+		log.Warnf("PythonInstall: pkgs: %s install failed, retry", out)
 		if out, err = utils.InstallPkgs(out, true); err != nil {
 			log.Errorf("PythonInstall: pkgs: %s install failed again, err is: %s", out, err.Error())
 			return err
