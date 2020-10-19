@@ -28,14 +28,21 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 		}
 	}
 
-	//groupInstallPkgs := []string{"Development tools"}
-	if out, err := utils.InstallPkgs([]string{k8sV17InitData.PythonInstall.Group}, true); err != nil {
-		log.Warnf("PythonInstall: group pkgs install failed, retry")
-		if out, err = utils.InstallPkgs(out, false); err != nil {
+	// groupInstallPkgs := []string{"Development tools"}
+	if out, err := utils.InstallPkgs(k8sV17InitData.PythonInstall.Group, true); err != nil {
+		if out, err = utils.InstallPkgs(out, true); err != nil {
 			log.Errorf("PythonInstall: pkgs: %s install failed again, err is: %s", out, err.Error())
 			return err
 		}
 	}
+
+	//if out, err := utils.InstallPkgs([]string{k8sV17InitData.PythonInstall.Group}, true); err != nil {
+	//	log.Warnf("PythonInstall: group pkgs install failed, retry")
+	//	if out, err = utils.InstallPkgs(out, false); err != nil {
+	//		log.Errorf("PythonInstall: pkgs: %s install failed again, err is: %s", out, err.Error())
+	//		return err
+	//	}
+	//}
 
 	// install python 3.6
 	wgetPythonCmd := fmt.Sprintf("wget -P /usr/local %s", k8sV17InitData.PythonInstall.Install)

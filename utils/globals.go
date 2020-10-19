@@ -38,7 +38,7 @@ type yum struct {
 type python struct {
 	Version string   `json:"version"`
 	Pkgs    []string `json:"pkgs"`
-	Group   string   `json:"group"`
+	Group   []string `json:"group"`
 	Install string   `json:"install"`
 }
 
