@@ -13,7 +13,8 @@ func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 
 	// check
 	checkCmd := fmt.Sprintf("docker --version")
-	if out, _ := utils.RunCommand(checkCmd); strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
+	if out, err := utils.RunCommand(checkCmd); err == nil {
+		strings.Contains(out, k8sV17InitData.DockerInstall.Version)
 		log.Warnf("DockerInstall: installed, ignore install again!")
 		return nil
 	}
