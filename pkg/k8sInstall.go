@@ -24,11 +24,13 @@ func K8sInstall (k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	// install kubeadm and kubelet and kubectl v1.17.0
+	var installPkgs string
 	for _, value := range k8sV17InitData.K8sInstall.Install {
-		installCmd := fmt.Sprintf("yum install -y %s --disableexcludes=kubernetes", value)
-		if _, err := utils.RunCommand(installCmd); err != nil {
-			return err
-		}
+		installPkgs = installPkgs + value
+	}
+	installCmd := fmt.Sprintf("yum install -y %s --disableexcludes=kubernetes", installPkgs)
+	if _, err := utils.RunCommand(installCmd); err != nil {
+		return err
 	}
 
 	// confirm
