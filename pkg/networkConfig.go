@@ -10,7 +10,6 @@ func NetworkConfig (k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("NetworkConfig: starting")
 
 	// install necessary pkgs
-	//installPkgs := []string{"ipvsadm", "ipset"}
 	if out, err := utils.InstallPkgs(k8sV17InitData.NetworkConfig.Pkgs, false ); err != nil {
 		if _, err := utils.InstallPkgs(out, false); err != nil {
 			return nil

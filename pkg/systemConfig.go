@@ -20,6 +20,11 @@ func SystemConfig (k8sV17InitData *utils.K8sV17Config) error {
 		return err
 	}
 
+	// ntpd config
+	if err := ntpdConfig(k8sV17InitData.SystemConfig.NtpdConfUrl); err != nil {
+		return err
+	}
+
 	log.Infof("SystemConfig: Succeed!")
 	return nil
 }
@@ -51,4 +56,23 @@ func firewalldAndSysctlConfig (sysctlUrl string) error {
 	}
 
 	return nil
+}
+
+func ntpdConfig (confUrl string) error {
+	ntpInstallCmd := fmt.Sprintf("yum install -y ntpd ntpdate")
+	if _, err := utils.RunCommand(ntpInstallCmd); err != nil {
+		return err
+	}
+
+	wgetCmd := fmt.Sprintf("wget -P /etc/ntp.conf %s", confUrl)
+	if _, err := utils.RunCommand(wgetCmd); err != nil {
+		return err
+	}
+
+	ntpEnableCmd := fmt.Sprintf("systemctl restart ntpd && systemctl enable ntpd")
+	if _, err := utils.RunCommand(ntpEnableCmd); err != nil {
+		return err
+	}
+
+	 return nil
 }

@@ -1,7 +1,11 @@
 package utils
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
+	"io"
 	"os"
 	"os/exec"
 )
@@ -44,4 +48,13 @@ func FileExisted(filename string) bool {
 	} else {
 		return true
 	}
+}
+
+func MarshalJsonToIOReader(v interface{}) (io.Reader, error) {
+	data, err := json.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	logrus.Infof("data is: %s", data)
+	return bytes.NewBuffer(data), nil
 }
