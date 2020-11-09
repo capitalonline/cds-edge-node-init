@@ -6,18 +6,18 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func NetworkConfig (k8sV17InitData *utils.K8sV17Config) error {
+func NetworkConfig(k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("NetworkConfig: starting")
 
 	// install necessary pkgs
-	if out, err := utils.InstallPkgs(k8sV17InitData.NetworkConfig.Pkgs, false ); err != nil {
+	if out, err := utils.InstallPkgs(k8sV17InitData.NetworkConfig.Pkgs, false); err != nil {
 		if _, err := utils.InstallPkgs(out, false); err != nil {
 			return nil
 		}
 	}
 
 	// wget ipvs.modules
-	wgetCmd := fmt.Sprintf("wget -P /etc/sysconfig/modules %s", k8sV17InitData.NetworkConfig.Ipvs)
+	wgetCmd := fmt.Sprintf("wget -O /etc/sysconfig/modules/ipvs.modules %s", k8sV17InitData.NetworkConfig.Ipvs)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		return err
 	}

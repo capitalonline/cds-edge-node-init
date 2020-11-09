@@ -8,7 +8,7 @@ import (
 )
 
 // version 19.03.11
-func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
+func DockerInstall(k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("DockerInstall: %s starting", k8sV17InitData.DockerInstall.Version)
 
 	// check
@@ -41,7 +41,7 @@ func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	// install docker
-	installDockerSlice := []string{"docker-ce-"+k8sV17InitData.DockerInstall.Version, "docker-ce-cli-"+k8sV17InitData.DockerInstall.Version, "containerd.io"}
+	installDockerSlice := []string{"docker-ce-" + k8sV17InitData.DockerInstall.Version, "docker-ce-cli-" + k8sV17InitData.DockerInstall.Version, "containerd.io"}
 	if out, err := utils.InstallPkgs(installDockerSlice, false); err != nil {
 		log.Warnf("PythonInstall: pkgs: %s install failed, retry", out)
 		if _, err := utils.InstallPkgs(out, false); err != nil {
@@ -51,7 +51,7 @@ func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	// wget docker daemon.json
-	wgetCmd := fmt.Sprintf("wget -P /etc/docker %s", k8sV17InitData.DockerInstall.DaemonFile)
+	wgetCmd := fmt.Sprintf("wget -O /etc/docker/daemon.json %s", k8sV17InitData.DockerInstall.DaemonFile)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		log.Errorf("DockerInstall: wget daemon.json failed, err is: %s", err)
 		return err
@@ -59,7 +59,7 @@ func DockerInstall (k8sV17InitData *utils.K8sV17Config) error {
 
 	// confirm
 	confirmCmd := fmt.Sprintf("docker --version")
-	if  out, err := utils.RunCommand(confirmCmd); err != nil {
+	if out, err := utils.RunCommand(confirmCmd); err != nil {
 		log.Errorf("DockerInstall: confirm docker version failed, err is: %s", err)
 		return err
 	} else if !strings.Contains(out, k8sV17InitData.DockerInstall.Version) {

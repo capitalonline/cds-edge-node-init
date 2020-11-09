@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
+func PythonInstall(k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("PythonInstall: %s Starting", k8sV17InitData.PythonInstall.Version)
 
 	// check
@@ -36,7 +36,7 @@ func PythonInstall (k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	// install python 3.6
-	wgetPythonCmd := fmt.Sprintf("wget -P /usr/local %s", k8sV17InitData.PythonInstall.Install)
+	wgetPythonCmd := fmt.Sprintf("wget -O /usr/local/Python-3.6.3.tar.xz %s", k8sV17InitData.PythonInstall.Install)
 	if _, err := utils.RunCommand(wgetPythonCmd); err != nil {
 		log.Warnf("PythonInstall: wget python failed, retry")
 		if _, err := utils.RunCommand(wgetPythonCmd); err != nil {

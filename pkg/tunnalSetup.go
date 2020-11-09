@@ -9,8 +9,8 @@ import (
 	"net/http"
 )
 
-func TunnalSetup(initData *utils.InitData) error {
-	log.Infof("TunnalSetup: starting")
+func TunnelSetup(initData *utils.InitData) error {
+	log.Infof("TunnelSetup: starting")
 
 	// get setup parameters
 	resParams, err := tunnelGetParams(initData)
@@ -19,21 +19,18 @@ func TunnalSetup(initData *utils.InitData) error {
 	}
 
 	// setup tunnel
-	//resParams.Data.ServerPort
-	//resParams.Data.TunnelAddress
-	//resParams.Data.ImageUrl
-
-	privatIp := ""
+	setupCmd := fmt.Sprintf("docker run -d --restart always --env SERVER_ADDR=%s --env SERVER_PORT=%s --env AUTH_TOKEN=%s --env REMOTE_PORT=%s --net host --name cck-agent %s/agent:%s", resParams.Data.TunnelAddress, resParams.Data.ServerPort, resParams.Data.Token, resParams.Data.TunnelPort, resParams.Data.ImageUrl, resParams.Data.Version)
+	if _, err := utils.RunCommand(setupCmd); err != nil {
+		return err
+	}
 
 	// inform
-	resInit, err := tunnelInit(initData, resParams.Data.NodeID, privatIp)
+	_, err = tunnelInit(initData, resParams.Data.NodeID, initData.PrivateIP)
 	if err != nil {
 		return err
 	}
 
-	log.Infof("TunnalSetup: init task_id is: %s, please check it in GIC web", resInit.Data.TaskId)
-	log.Infof("TunnalSetup: succeed!")
-
+	log.Infof("TunnelSetup: succeed!")
 	return nil
 }
 

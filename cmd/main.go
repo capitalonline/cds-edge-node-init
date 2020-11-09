@@ -13,15 +13,15 @@ const (
 )
 
 var (
-	k8sVersion       = flag.String("version", "1.17.0", "k8s init version")
-	clusterID        = flag.String("cluster_id", "", "cluster's id")
-	rootPassword     = flag.String("root_password", "", "node's root password")
-	ak               = flag.String("ak", "", "access key")
-	sk               = flag.String("sk", "", "secret key")
-	userID           = flag.String("user_id", "", "user id")
-	customerID       = flag.String("customer_id", "", "customer id")
-	gateWay          = flag.String("gateway", "", "cluster's ros gateway")
-	privateNetDevice = flag.String("private_net_device", "", "")
+	k8sVersion   = flag.String("version", "1.17.0", "k8s init version")
+	clusterID    = flag.String("cluster_id", "", "cluster's id")
+	rootPassword = flag.String("root_password", "", "node's root password")
+	ak           = flag.String("ak", "", "access key")
+	sk           = flag.String("sk", "", "secret key")
+	userID       = flag.String("user_id", "", "user id")
+	customerID   = flag.String("customer_id", "", "customer id")
+	gateWay      = flag.String("gateway", "", "cluster's ros gateway")
+	privateIP    = flag.String("private_ip", "", "global private ip")
 )
 
 func init() {
@@ -44,7 +44,7 @@ func main() {
 	InitInfo.UserID = *userID
 	InitInfo.ClusterID = *customerID
 	InitInfo.Gateway = *gateWay
-	InitInfo.PrivateNetDevice = *privateNetDevice
+	InitInfo.PrivateIP = *privateIP
 
 	switch version {
 	case k8sV17Version:

@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func SystemConfig (k8sV17InitData *utils.K8sV17Config) error {
+func SystemConfig(k8sV17InitData *utils.K8sV17Config) error {
 	log.Infof("SystemConfig: Starting")
 
 	// selinux config
@@ -29,7 +29,6 @@ func SystemConfig (k8sV17InitData *utils.K8sV17Config) error {
 	return nil
 }
 
-
 func selinuxConfig() error {
 	selinuxConfigCmd := fmt.Sprintf("setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
 	if out, err := utils.RunCommand("getenforce"); err == nil {
@@ -44,27 +43,27 @@ func selinuxConfig() error {
 	return nil
 }
 
-func firewalldAndSysctlConfig (sysctlUrl string) error {
+func firewalldAndSysctlConfig(sysctlUrl string) error {
 	firewallCmd := fmt.Sprintf("systemctl stop firewalld && systemctl disable firewalld")
 	if _, err := utils.RunCommand(firewallCmd); err != nil {
-		return  err
+		return err
 	}
 
 	modifyCmd := fmt.Sprintf("mv /etc/sysctl.conf /etc/bak-sysctl.conf && wget -P /etc %s", sysctlUrl)
 	if _, err := utils.RunCommand(modifyCmd); err != nil {
-		return  err
+		return err
 	}
 
 	return nil
 }
 
-func ntpdConfig (confUrl string) error {
+func ntpdConfig(confUrl string) error {
 	ntpInstallCmd := fmt.Sprintf("yum install -y ntpd ntpdate")
 	if _, err := utils.RunCommand(ntpInstallCmd); err != nil {
 		return err
 	}
 
-	wgetCmd := fmt.Sprintf("wget -P /etc/ntp.conf %s", confUrl)
+	wgetCmd := fmt.Sprintf("wget -O /etc/ntp.conf %s", confUrl)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
 		return err
 	}
@@ -74,5 +73,5 @@ func ntpdConfig (confUrl string) error {
 		return err
 	}
 
-	 return nil
+	return nil
 }

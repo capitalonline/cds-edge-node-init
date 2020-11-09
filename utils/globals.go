@@ -37,7 +37,7 @@ type InitData struct {
 	UserID           string
 	CustomerID       string
 	Gateway          string
-	PrivateNetDevice string
+	PrivateIP		 string
 }
 
 type TunnelGetReponse struct {
