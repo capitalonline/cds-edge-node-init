@@ -45,6 +45,7 @@ func main() {
 	InitInfo.ClusterID = *customerID
 	InitInfo.Gateway = *gateWay
 	InitInfo.PrivateIP = *privateIP
+	InitInfo.K8sVersion = *k8sVersion
 
 	switch version {
 	case k8sV17Version:

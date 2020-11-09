@@ -29,7 +29,7 @@ type BaseResponse struct {
 }
 
 type InitData struct {
-	k8sVersion       string
+	K8sVersion       string
 	ClusterID        string
 	RootPassword     string
 	Ak               string

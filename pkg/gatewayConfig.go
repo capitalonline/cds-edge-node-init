@@ -37,6 +37,14 @@ func GatewayConfig(gateway, privateIp string) error {
 		return err
 	}
 
+	// confirm
+	confirmCmd := fmt.Sprintf("ip route | grep %s", gateway)
+	if out, err := utils.RunCommand(confirmCmd); err != nil {
+		return err
+	} else if out == "" {
+		return fmt.Errorf("GatewayConfig: confirm gateway configuration failed")
+	}
+
 	log.Infof("GatewayConfig: succeed!")
 	return nil
 }
