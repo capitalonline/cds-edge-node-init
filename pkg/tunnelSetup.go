@@ -48,8 +48,8 @@ func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetReponse, error) 
 		initData.CustomerID,
 		"tunnel",
 		struct {
-			ClusterId    string
-			RootPassword string
+			ClusterId    string `json:"cluster_id"`
+			RootPassword string `json:"root_password"`
 		}{ClusterId: initData.ClusterID, RootPassword: initData.RootPassword},
 	}
 
@@ -94,10 +94,10 @@ func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitR
 		initData.CustomerID,
 		"init",
 		struct {
-			ClusterId    string
-			NodeId       string
-			RootPassword string
-			Ip           string
+			ClusterId    string `json:"cluster_id"`
+			NodeId       string `json:"node_id"`
+			RootPassword string `json:"root_password"`
+			Ip           string `json:"ip"`
 		}{ClusterId: initData.ClusterID, NodeId: nodeId, RootPassword: initData.RootPassword, Ip: ip},
 	}
 
