@@ -1,3 +1,6 @@
+# github.com/google/uuid v1.1.2
+## explicit
+github.com/google/uuid
 # github.com/kr/pretty v0.1.0
 ## explicit
 # github.com/sirupsen/logrus v1.7.0
