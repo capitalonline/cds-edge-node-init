@@ -58,7 +58,7 @@ func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetReponse, error) 
 		return nil, err
 	}
 
-	req, err := utils.NewCCKRequest("", http.MethodPost, nil, body)
+	req, err := utils.NewCCKRequest("AddExternalNode", http.MethodPost, nil, body)
 	response, err := utils.DoRequest(req)
 	if err != nil {
 		return nil, err
@@ -106,7 +106,7 @@ func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitR
 		return nil, err
 	}
 
-	req, err := utils.NewCCKRequest("", http.MethodPost, nil, body)
+	req, err := utils.NewCCKRequest("AddExternalNode", http.MethodPost, nil, body)
 	response, err := utils.DoRequest(req)
 	if err != nil {
 		return nil, err
