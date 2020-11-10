@@ -15,7 +15,7 @@ func K8sV17Run(k8s17InitJsonUrl string, initInfo *utils.InitData) {
 
 	// set network gateway
 	if err := pkg.GatewayConfig(initInfo.Gateway, initInfo.PrivateIP); err != nil {
-		log.Fatalf("K8sV17Run: config ros gate failed, err is: %s", err)
+		log.Fatalf("K8sV17Run: config ros gateway failed, err is: %s", err)
 	}
 
 	// wget k8s17InitJsonUrl
