@@ -19,6 +19,7 @@ func K8sV17Run(k8s17InitJsonUrl string, initInfo *utils.InitData) {
 	}
 
 	// wget k8s17InitJsonUrl
+	log.Infof("K8sV17Run: wget installing")
 	wgetInstall := []string{"wget"}
 	if _, err := utils.InstallPkgs(wgetInstall, false); err != nil {
 		log.Fatalf("K8sV17Run: install wget failed, err is: %s", err)
@@ -32,7 +33,7 @@ func K8sV17Run(k8s17InitJsonUrl string, initInfo *utils.InitData) {
 			log.Fatalf("K8sV17Run: wget k8s17InitJson failed AGAIN, err is: %s", err)
 		}
 	}
-
+	log.Infof("K8sV17Run: wget installed")
 	// read /tmp/k8sV1.17.0Install.json and unmarshal
 	var k8sV17ConfigData utils.K8sV17Config
 	if res, err := ioutil.ReadFile("/tmp/k8sV1.17.0Install.json"); err != nil {

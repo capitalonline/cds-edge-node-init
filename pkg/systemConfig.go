@@ -58,7 +58,7 @@ func firewalldAndSysctlConfig(sysctlUrl string) error {
 }
 
 func ntpdConfig(confUrl string) error {
-	ntpInstallCmd := fmt.Sprintf("yum install -y ntpd ntpdate")
+	ntpInstallCmd := fmt.Sprintf("yum install -y ntp ntpdate")
 	if _, err := utils.RunCommand(ntpInstallCmd); err != nil {
 		return err
 	}
