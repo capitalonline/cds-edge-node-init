@@ -13,7 +13,7 @@ const (
 )
 
 var (
-	k8sVersion   = flag.String("version", "1.17.0", "k8s init version")
+	k8sVersion   = flag.String("k8s_version", "1.17.0", "k8s init version")
 	clusterID    = flag.String("cluster_id", "", "cluster's id")
 	rootPassword = flag.String("root_password", "", "node's root password")
 	ak           = flag.String("ak", "", "access key")

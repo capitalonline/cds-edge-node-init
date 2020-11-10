@@ -36,7 +36,7 @@ func TunnelSetup(initData *utils.InitData) error {
 }
 
 func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetResponse, error) {
-	log.Infof("TunnelSetup-tunnelGetParams: starting")
+	//log.Infof("TunnelSetup-tunnelGetParams: starting")
 	payload := struct {
 		UserId     string `json:"user_id"`
 		CustomerId string `json:"customer_id"`
@@ -77,12 +77,12 @@ func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetResponse, error)
 		return nil, err
 	}
 
-	log.Infof("TunnelSetup-tunnelGetParams: finish")
+	//log.Infof("TunnelSetup-tunnelGetParams: finish")
 	return res, nil
 }
 
 func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitResponse, error) {
-	log.Infof("TunnelSetup-tunnelInit: starting")
+	//log.Infof("TunnelSetup-tunnelInit: starting")
 	payload := struct {
 		UserId     string `json:"user_id,omitempty"`
 		CustomerId string `json:"customer_id,omitempty"`
@@ -127,6 +127,6 @@ func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitR
 		return nil, err
 	}
 
-	log.Infof("TunnelSetup-tunnelInit: finish")
+	//log.Infof("TunnelSetup-tunnelInit: finish")
 	return res, nil
 }
