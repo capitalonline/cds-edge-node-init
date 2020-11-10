@@ -22,7 +22,7 @@ func GatewayConfig(gateway, privateIp string) error {
 	}
 
 	// config gateway to privateIP
-	netDeviceCfgFile := fmt.Sprintf("/etc/sysconfig/network-scripts/ifcfg-%s", netDevice)
+	netDeviceCfgFile := fmt.Sprintf("/etc/sysconfig/network-scripts/ifcfg-%s", strings.Replace(netDevice, "\n", "", -1))
 	if !utils.FileExisted(netDeviceCfgFile) {
 		return fmt.Errorf("GatewayConfig: %s not exist", netDeviceCfgFile)
 	}
