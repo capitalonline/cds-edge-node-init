@@ -37,12 +37,12 @@ func main() {
 	version := *k8sVersion
 
 	var InitInfo utils.InitData
-	InitInfo.ClusterID = *clusterID
+	InitInfo.UserID = *userID
+	InitInfo.CustomerID = *customerID
 	InitInfo.Ak = *ak
 	InitInfo.Sk = *sk
+	InitInfo.ClusterID = *clusterID
 	InitInfo.RootPassword = *rootPassword
-	InitInfo.UserID = *userID
-	InitInfo.ClusterID = *customerID
 	InitInfo.Gateway = *gateWay
 	InitInfo.PrivateIP = *privateIP
 	InitInfo.K8sVersion = *k8sVersion
