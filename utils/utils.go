@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"io"
 	"os"
 	"os/exec"
@@ -55,6 +54,6 @@ func MarshalJsonToIOReader(v interface{}) (io.Reader, error) {
 	if err != nil {
 		return nil, err
 	}
-	logrus.Infof("data is: %s", data)
+	// logrus.Infof("data is: %s", data)
 	return bytes.NewBuffer(data), nil
 }

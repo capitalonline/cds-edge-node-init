@@ -14,7 +14,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/google/uuid"
-	log "github.com/sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -68,7 +67,7 @@ func DoRequest(req *CloudRequest) (resp *http.Response, err error) {
 	if err != nil {
 		return
 	}
-	log.Infof("send request url: %s", reqUrl)
+	//log.Infof("send request url: %s", reqUrl)
 	resp, err = http.DefaultClient.Do(sendRequest)
 	return
 }
