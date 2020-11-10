@@ -40,13 +40,13 @@ type InitData struct {
 	PrivateIP		 string
 }
 
-type TunnelGetReponse struct {
+type TunnelGetResponse struct {
 	BaseResponse
 	Data struct {
 		NodeID        string `json:"node_id"`
 		TunnelAddress string `json:"tunnel_address"`
 		TunnelPort    string `json:"tunnel_port"`
-		IdRsapub      string `json:"id_rsa_pub"`
+		IdRsaPub      string `json:"id_rsa_pub"`
 		Token         string `json:"token"`
 		Version       string `json:"version"`
 		ServerPort    string `json:"server_port"`
@@ -54,7 +54,7 @@ type TunnelGetReponse struct {
 	} `json:"data"`
 }
 
-type TunnelInitReponse struct {
+type TunnelInitResponse struct {
 	BaseResponse
 	Data struct {
 		ClusterID string `json:"cluster_id"`

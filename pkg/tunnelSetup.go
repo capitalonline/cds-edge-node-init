@@ -25,16 +25,17 @@ func TunnelSetup(initData *utils.InitData) error {
 	}
 
 	// inform
-	_, err = tunnelInit(initData, resParams.Data.NodeID, initData.PrivateIP)
+	resInit, err := tunnelInit(initData, resParams.Data.NodeID, initData.PrivateIP)
 	if err != nil {
 		return err
 	}
 
+	log.Infof("TunnelSetup: taskId: %s", resInit.Data.TaskId)
 	log.Infof("TunnelSetup: succeed!")
 	return nil
 }
 
-func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetReponse, error) {
+func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetResponse, error) {
 	payload := struct {
 		UserId     string `json:"user_id,omitempty"`
 		CustomerId string `json:"customer_id,omitempty"`
@@ -69,7 +70,7 @@ func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetReponse, error) 
 		return nil, fmt.Errorf("http error:%s, %s", response.Status, string(content))
 	}
 
-	res := &utils.TunnelGetReponse{}
+	res := &utils.TunnelGetResponse{}
 	err = json.Unmarshal(content, res)
 	if err != nil {
 		return nil, err
@@ -78,7 +79,7 @@ func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetReponse, error) 
 	return res, nil
 }
 
-func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitReponse, error) {
+func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitResponse, error) {
 	payload := struct {
 		UserId     string `json:"user_id,omitempty"`
 		CustomerId string `json:"customer_id,omitempty"`
@@ -117,7 +118,7 @@ func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitR
 		return nil, fmt.Errorf("http error:%s, %s", response.Status, string(content))
 	}
 
-	res := &utils.TunnelInitReponse{}
+	res := &utils.TunnelInitResponse{}
 	err = json.Unmarshal(content, res)
 	if err != nil {
 		return nil, err
