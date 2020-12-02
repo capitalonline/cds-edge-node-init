@@ -9,7 +9,7 @@ import (
 
 const (
 	k8sV17Version            = "1.17.0"
-	k8sV17InitDefaultJsonUrl = "http://cds-edge-node-init.209faf3a84524f9f81d71f2c0be97de3.oss-cnbj01.cdsgss.com/centos7.6/k8sV1.17.0Install.json"
+	k8sV17InitDefaultJsonUrl = "http://cds-edge-node-init.209faf3a84524f9f81d71f2c0be97de3.oss-cnbj01.cdsgss.com/k8sV17Init/k8sV1.17.0Install.json"
 )
 
 var (
