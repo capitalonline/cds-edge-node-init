@@ -62,7 +62,7 @@ func DockerInstall(k8sV17InitData *utils.K8sV17Config) error {
 	if out, err := utils.RunCommand(confirmCmd); err != nil {
 		log.Errorf("DockerInstall: confirm docker version failed, err is: %s", err)
 		return err
-	} else if !strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
+	} else if !strings.Contains(out, "19.03") {
 		log.Errorf("DockerInstall: docker installed version is wrong, out is: %s", out)
 		return fmt.Errorf(out)
 	}
