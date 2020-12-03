@@ -50,6 +50,14 @@ func DockerInstall(k8sV17InitData *utils.K8sV17Config) error {
 		}
 	}
 
+	// create docker dir
+	if !utils.FileExisted("/data/docker") {
+		if err := utils.CreateDir("/data/docker", 755); err != nil {
+			log.Errorf("DockerInstall: create docker dir failed, err is: %s", err)
+			return err
+		}
+	}
+
 	// wget docker daemon.json
 	wgetCmd := fmt.Sprintf("wget -O /etc/docker/daemon.json %s", k8sV17InitData.DockerInstall.DaemonFile)
 	if _, err := utils.RunCommand(wgetCmd); err != nil {
