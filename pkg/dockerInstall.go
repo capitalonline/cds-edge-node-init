@@ -51,9 +51,9 @@ func DockerInstall(k8sV17InitData *utils.K8sV17Config) error {
 	}
 
 	// create docker dir
-	if !utils.FileExisted("/data/docker") {
-		if err := utils.CreateDir("/data/docker", 755); err != nil {
-			log.Errorf("DockerInstall: create docker dir failed, err is: %s", err)
+	if !utils.FileExisted("/etc/docker") {
+		if err := utils.CreateDir("/etc/docker", 755); err != nil {
+			log.Errorf("DockerInstall: create /etc/docker dir failed, err is: %s", err)
 			return err
 		}
 	}
