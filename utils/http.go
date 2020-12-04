@@ -109,7 +109,7 @@ func getUrl(req *CloudRequest) string {
 		urlVal.Add(k, v)
 	}
 	urlValStr := urlVal.Encode()
-	reqUrl := fmt.Sprintf("%s/%s?%s", apiHost, req.productType, urlValStr)
+	reqUrl := fmt.Sprintf("%s/%s?%s", APIHost, req.productType, urlValStr)
 	return reqUrl
 }
 

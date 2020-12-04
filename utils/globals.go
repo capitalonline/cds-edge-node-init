@@ -12,6 +12,7 @@ var (
 
 	AccessKeyID     string
 	AccessKeySecret string
+	APIHost			string
 )
 
 const (
@@ -20,7 +21,6 @@ const (
 	signatureVersion = "1.0"
 	signatureMethod  = "HMAC-SHA1"
 	timeStampFormat  = "2006-01-02T15:04:05Z"
-	apiHost          = "http://cdsapi.capitalonline.net"
 )
 
 type BaseResponse struct {

@@ -22,6 +22,7 @@ var (
 	customerID   = flag.String("customer_id", "", "customer id")
 	gateWay      = flag.String("gateway", "", "cluster's ros gateway")
 	privateIP    = flag.String("private_ip", "", "global private ip")
+	oversea      = flag.String("oversea", "", "oversea")
 )
 
 func init() {
@@ -31,6 +32,15 @@ func init() {
 	// init cds api ak and sk
 	utils.AccessKeyID = *ak
 	utils.AccessKeySecret = *sk
+
+	// init APIHost
+	if "true" == *oversea {
+		utils.APIHost = "http://cdsapi-us.capitalonline.net"
+	} else if "false" == *oversea {
+		utils.APIHost = "http://cdsapi.capitalonline.net"
+	} else {
+		log.Fatalf("unsupported oversea: %s, should be one of [true|false]!", *oversea)
+	}
 }
 
 func main() {
