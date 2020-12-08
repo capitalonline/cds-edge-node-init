@@ -25,6 +25,18 @@ func SystemConfig(k8sV17InitData *utils.K8sV17Config) error {
 		return err
 	}
 
+	// switch off swap
+	swapCmd := fmt.Sprintf("sed -i '/swap/ s/^/#/' /etc/fstab && swapoff -a")
+	if _, err := utils.RunCommand(swapCmd); err != nil {
+		return err
+	}
+
+	// set files limit to 65535
+	limitsCmd := fmt.Sprintf("echo '* - nofile 65535' >> /etc/security/limits.conf")
+	if _, err := utils.RunCommand(limitsCmd); err != nil {
+		return err
+	}
+
 	log.Infof("SystemConfig: Succeed!")
 	return nil
 }
