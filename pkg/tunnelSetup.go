@@ -24,8 +24,22 @@ func TunnelSetup(initData *utils.InitData) error {
 		return err
 	}
 
+	// get node's memory
+	memoryCmd := fmt.Sprintf("cat /proc/meminfo | grep MemTotal | awk '{print $2}'")
+	memorySizeKB, err := utils.RunCommand(memoryCmd)
+	if err != nil {
+		return err
+	}
+
+	// get node's cpu
+	cpuCmd := fmt.Sprintf("grep 'physical id' /proc/cpuinfo | sort -u | wc -l")
+	cpuNum, err := utils.RunCommand(cpuCmd)
+	if err != nil {
+		return err
+	}
+
 	// inform
-	resInit, err := tunnelInit(initData, resParams.Data.NodeID, initData.PrivateIP)
+	resInit, err := tunnelInit(initData, resParams.Data.NodeID, initData.PrivateIP, memorySizeKB, cpuNum)
 	if err != nil {
 		return err
 	}
@@ -81,7 +95,7 @@ func tunnelGetParams(initData *utils.InitData) (*utils.TunnelGetResponse, error)
 	return res, nil
 }
 
-func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitResponse, error) {
+func tunnelInit(initData *utils.InitData, nodeId, ip, memorySizeKB, cpuNum string) (*utils.TunnelInitResponse, error) {
 	//log.Infof("TunnelSetup-tunnelInit: starting")
 	payload := struct {
 		UserId     string `json:"user_id,omitempty"`
@@ -92,6 +106,8 @@ func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitR
 			NodeId       string `json:"node_id"`
 			RootPassword string `json:"root_password"`
 			Ip           string `json:"ip"`
+			MemorySizeKB string `json:"memory_size_kb"`
+			CpuNum		 string `json:"cpu_num"`
 		} `json:"data"`
 	}{
 		initData.UserID,
@@ -102,7 +118,9 @@ func tunnelInit(initData *utils.InitData, nodeId, ip string) (*utils.TunnelInitR
 			NodeId       string `json:"node_id"`
 			RootPassword string `json:"root_password"`
 			Ip           string `json:"ip"`
-		}{ClusterId: initData.ClusterID, NodeId: nodeId, RootPassword: initData.RootPassword, Ip: ip},
+			MemorySizeKB string `json:"memory_size_kb"`
+			CpuNum		 string `json:"cpu_num"`
+		}{ClusterId: initData.ClusterID, NodeId: nodeId, RootPassword: initData.RootPassword, Ip: ip, MemorySizeKB:memorySizeKB, CpuNum:cpuNum},
 	}
 
 	body, err := utils.MarshalJsonToIOReader(payload)
