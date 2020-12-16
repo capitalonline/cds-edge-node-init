@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
-	"strings"
 )
 
 // version 19.03.11
@@ -13,8 +12,8 @@ func DockerInstall(k8sV17InitData *utils.K8sV17Config) error {
 
 	// check
 	checkCmd := fmt.Sprintf("docker --version")
-	if out, err := utils.RunCommand(checkCmd); err == nil && strings.Contains(out, k8sV17InitData.DockerInstall.Version) {
-		log.Warnf("DockerInstall: docker %s installed, ignore install again!", k8sV17InitData.DockerInstall.Version)
+	if out, err := utils.RunCommand(checkCmd); err == nil {
+		log.Warnf("DockerInstall: docker %s installed, ignore install again!", out)
 		// make sure docker running
 		startCmd := fmt.Sprintf("systemctl start docker && systemctl enable docker")
 		if _, err := utils.RunCommand(startCmd); err != nil {
@@ -67,12 +66,9 @@ func DockerInstall(k8sV17InitData *utils.K8sV17Config) error {
 
 	// confirm
 	confirmCmd := fmt.Sprintf("docker --version")
-	if out, err := utils.RunCommand(confirmCmd); err != nil {
+	if _, err := utils.RunCommand(confirmCmd); err != nil {
 		log.Errorf("DockerInstall: confirm docker version failed, err is: %s", err)
 		return err
-	} else if !strings.Contains(out, "19.03") {
-		log.Errorf("DockerInstall: docker installed version is wrong, out is: %s", out)
-		return fmt.Errorf(out)
 	}
 
 	// start docker

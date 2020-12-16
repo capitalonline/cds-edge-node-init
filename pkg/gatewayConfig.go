@@ -16,7 +16,7 @@ func GatewayConfig(gateway, privateIp string) error {
 		log.Infof("GatewayConfig: public ip is: %s, do not configure private gateway", out)
 		return nil
 	}
-	
+
 	// find the net device by ip
 	var netDevice string
 	getDeviceCmd := fmt.Sprintf("ip a | grep %s", privateIp)
