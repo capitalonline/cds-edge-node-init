@@ -11,12 +11,13 @@ func GatewayConfig(gateway, privateIp string) error {
 	log.Infof("GatewayConfig: starting")
 
 	// check if public ip exist or not
-	publicCmd := fmt.Sprintf("curl -s checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//'")
-	if out, err := utils.RunCommand(publicCmd); err == nil {
-		log.Warnf("GatewayConfig: public ip is: %s, do not configure private gateway", out)
+	// publicCmd := fmt.Sprintf("curl -s checkip.dyndns.org|sed -e 's/.*Current IP Address: //' -e 's/<.*$//'")
+	publicCmd := fmt.Sprintf("ping www.baidu.com -c 3")
+	if _, err := utils.RunCommand(publicCmd); err == nil {
+		log.Warnf("GatewayConfig: public ip exist, do not configure private gateway")
 		return nil
 	} else {
-		log.Infof("GatewayConfig: public ip is not exist, out is: %s, continue to configure gateway", strings.TrimSpace(out))
+		log.Infof("GatewayConfig: public ip is not exist, continue to configure gateway")
 	}
 
 	// find the net device by ip
