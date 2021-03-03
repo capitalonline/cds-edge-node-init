@@ -45,13 +45,13 @@ func selinuxConfig() error {
 	selinuxConfigCmd := fmt.Sprintf("setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config")
 	if out, err := utils.RunCommand("getenforce"); err == nil {
 		if strings.Contains(out, "Disabled") {
-			selinuxConfigCmd = fmt.Sprintf("sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
-			utils.RunCommand(selinuxConfigCmd)
+			selinuxConfigCmd = fmt.Sprintf("sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config")
 		}
 	} else {
 		return err
 	}
 
+	utils.RunCommand(selinuxConfigCmd)
 	return nil
 }
 
