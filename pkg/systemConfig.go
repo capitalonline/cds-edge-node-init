@@ -42,7 +42,7 @@ func SystemConfig(k8sV17InitData *utils.K8sV17Config) error {
 }
 
 func selinuxConfig() error {
-	selinuxConfigCmd := fmt.Sprintf("setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
+	selinuxConfigCmd := fmt.Sprintf("setenforce 0 && sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config")
 	if out, err := utils.RunCommand("getenforce"); err == nil {
 		if strings.Contains(out, "Disabled") {
 			selinuxConfigCmd = fmt.Sprintf("sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux")
