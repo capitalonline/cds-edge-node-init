@@ -51,7 +51,9 @@ func selinuxConfig() error {
 		return err
 	}
 
-	utils.RunCommand(selinuxConfigCmd)
+	if _, err := utils.RunCommand(selinuxConfigCmd); err != nil {
+		return err
+	}
 	return nil
 }
 
