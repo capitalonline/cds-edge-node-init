@@ -7,11 +7,23 @@ import (
 	"github.com/capitalonline/cds-edge-node-init/utils"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
+	"strings"
 	"time"
 )
 
 func K8sV17Run(k8s17InitJsonUrl string, initInfo *utils.InitData) {
 	log.Infof("K8sV17Run: init starting")
+
+	// check selinux status, exit if it is not in disabled status
+	selinuxStatusCmd := fmt.Sprintf("getenforce")
+	if out, err := utils.RunCommand(selinuxStatusCmd); err == nil {
+		if !strings.Contains(out, "Disabled"){
+			log.Fatalf("K8sV17Run: getenforce is not in Disabled, please close selinux manually")
+		}
+		log.Infof("K8sV17Run: getenforce is Disabled")
+	} else {
+		log.Fatalf("K8sV17Run: getenforce failed, err is: %s", err)
+	}
 
 	// set network gateway
 	if err := pkg.GatewayConfig(initInfo.Gateway, initInfo.PrivateIP); err != nil {
